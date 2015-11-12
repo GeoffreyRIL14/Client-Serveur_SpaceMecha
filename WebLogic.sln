@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebLogic", "WebLogic\WebLogic.csproj", "{CA5E8008-9471-49B1-8DB4-E042F867284D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BackEnd-EventsServices", "BackEnd-EventsServices\BackEnd-EventsServices.csproj", "{C0B5DBAF-7FD2-42C9-9BD2-A44EC6A33720}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CA5E8008-9471-49B1-8DB4-E042F867284D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CA5E8008-9471-49B1-8DB4-E042F867284D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CA5E8008-9471-49B1-8DB4-E042F867284D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CA5E8008-9471-49B1-8DB4-E042F867284D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C0B5DBAF-7FD2-42C9-9BD2-A44EC6A33720}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C0B5DBAF-7FD2-42C9-9BD2-A44EC6A33720}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C0B5DBAF-7FD2-42C9-9BD2-A44EC6A33720}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C0B5DBAF-7FD2-42C9-9BD2-A44EC6A33720}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

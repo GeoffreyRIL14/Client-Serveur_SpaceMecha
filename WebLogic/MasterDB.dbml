@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="SpaceMecha" Class="MasterDBDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="WebSettings" ConnectionString="Data Source=MYAPACHEGR\SQLEXPRESS;Initial Catalog=SpaceMecha;Integrated Security=True" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="SpaceMechaConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.Event" Member="Event">
+    <Type Name="Event">
+      <Column Name="idEvent" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="StartDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="EndDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="Description" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="Image" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Association Name="Event_GroupSign" Member="GroupSign" ThisKey="idEvent" OtherKey="idEvent" Type="GroupSign" />
+      <Association Name="Event_PricePool" Member="PricePool" ThisKey="idEvent" OtherKey="idEvent" Type="PricePool" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Profil" Member="Profil">
+    <Type Name="Profil">
+      <Column Name="idProfil" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="VarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="Avatar" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
+      <Column Name="Rank" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="TokenId" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
+      <Association Name="Profil_GroupSign" Member="GroupSign" ThisKey="idProfil" OtherKey="idProfil" Type="GroupSign" />
+    </Type>
+  </Table>
+  <Table Name="dbo.GroupSign" Member="GroupSign">
+    <Type Name="GroupSign">
+      <Column Name="idProfil" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="idEvent" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Score" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="Event_GroupSign" Member="Event" ThisKey="idEvent" OtherKey="idEvent" Type="Event" IsForeignKey="true" />
+      <Association Name="Profil_GroupSign" Member="Profil" ThisKey="idProfil" OtherKey="idProfil" Type="Profil" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Price" Member="Price">
+    <Type Name="Price">
+      <Column Name="idPrice" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Description" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Path" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="Image" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
+      <Association Name="Price_PricePool" Member="PricePool" ThisKey="idPrice" OtherKey="idPrice" Type="PricePool" />
+    </Type>
+  </Table>
+  <Table Name="dbo.PricePool" Member="PricePool">
+    <Type Name="PricePool">
+      <Column Name="idPricePool" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="idEvent" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="idPrice" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="placeRangeMin" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="placeRangeMax" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="placePurcent" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Association Name="Event_PricePool" Member="Event" ThisKey="idEvent" OtherKey="idEvent" Type="Event" IsForeignKey="true" />
+      <Association Name="Price_PricePool" Member="Price" ThisKey="idPrice" OtherKey="idPrice" Type="Price" IsForeignKey="true" />
+    </Type>
+  </Table>
+</Database>
