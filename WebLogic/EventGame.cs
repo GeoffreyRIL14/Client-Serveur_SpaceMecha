@@ -9,8 +9,8 @@ namespace WebLogic
     [Serializable]
     public class EventGame
     {
-        public EventS events;
-        public PricePoolS[] pricePools;
-        public PriceS[] prices;
+        public EventS eventS;
+        public PricePoolS[] pricePoolS;
+        public PriceS[] priceS;
     }
 }

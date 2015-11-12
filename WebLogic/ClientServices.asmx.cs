@@ -40,22 +40,22 @@ namespace WebLogic
         {
             EventGame result = new EventGame();
             EventS eventS = EventsServices.Instance.GetCurrentEvent(DateTime.Now);
-            PricePoolS[] pricepools = null;
+            PricePoolS[] pricepoolS = null;
 
             if (eventS != null)
             {
-                pricepools = EventsServices.Instance.GetPricePool(eventS.id);
-                result.events = eventS;
+                pricepoolS = EventsServices.Instance.GetPricePool(eventS.id);
+                result.eventS = eventS;
 
-                if (pricepools != null)
+                if (pricepoolS != null)
                 {
-                    result.pricePools = new PricePoolS[pricepools.Length];
-                    result.prices = new PriceS[pricepools.Length];
+                    result.pricePoolS = new PricePoolS[pricepoolS.Length];
+                    result.priceS = new PriceS[pricepoolS.Length];
 
-                    for (int i = 0; i < pricepools.Length; i++)
+                    for (int i = 0; i < pricepoolS.Length; i++)
                     {
-                        result.pricePools[i] = pricepools[i];
-                        result.prices[i] = EventsServices.Instance.GetPrice(pricepools[i].priceId);
+                        result.pricePoolS[i] = pricepoolS[i];
+                        result.priceS[i] = EventsServices.Instance.GetPrice(pricepoolS[i].priceId);
                     }
 
                     return result;
