@@ -434,9 +434,8 @@ public partial class EventsServices : System.Web.Services.Protocols.SoapHttpClie
     
     /// <remarks/>
     [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://tempuri.org/CreateOrUpdateGroupSign", RequestNamespace="http://tempuri.org/", ResponseNamespace="http://tempuri.org/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
-    public bool CreateOrUpdateGroupSign(int id, int eventId, int profilId, int score) {
+    public bool CreateOrUpdateGroupSign(int eventId, int profilId, int score) {
         object[] results = this.Invoke("CreateOrUpdateGroupSign", new object[] {
-                    id,
                     eventId,
                     profilId,
                     score});
@@ -444,9 +443,8 @@ public partial class EventsServices : System.Web.Services.Protocols.SoapHttpClie
     }
     
     /// <remarks/>
-    public System.IAsyncResult BeginCreateOrUpdateGroupSign(int id, int eventId, int profilId, int score, System.AsyncCallback callback, object asyncState) {
+    public System.IAsyncResult BeginCreateOrUpdateGroupSign(int eventId, int profilId, int score, System.AsyncCallback callback, object asyncState) {
         return this.BeginInvoke("CreateOrUpdateGroupSign", new object[] {
-                    id,
                     eventId,
                     profilId,
                     score}, callback, asyncState);
@@ -459,17 +457,16 @@ public partial class EventsServices : System.Web.Services.Protocols.SoapHttpClie
     }
     
     /// <remarks/>
-    public void CreateOrUpdateGroupSignAsync(int id, int eventId, int profilId, int score) {
-        this.CreateOrUpdateGroupSignAsync(id, eventId, profilId, score, null);
+    public void CreateOrUpdateGroupSignAsync(int eventId, int profilId, int score) {
+        this.CreateOrUpdateGroupSignAsync(eventId, profilId, score, null);
     }
     
     /// <remarks/>
-    public void CreateOrUpdateGroupSignAsync(int id, int eventId, int profilId, int score, object userState) {
+    public void CreateOrUpdateGroupSignAsync(int eventId, int profilId, int score, object userState) {
         if ((this.CreateOrUpdateGroupSignOperationCompleted == null)) {
             this.CreateOrUpdateGroupSignOperationCompleted = new System.Threading.SendOrPostCallback(this.OnCreateOrUpdateGroupSignOperationCompleted);
         }
         this.InvokeAsync("CreateOrUpdateGroupSign", new object[] {
-                    id,
                     eventId,
                     profilId,
                     score}, this.CreateOrUpdateGroupSignOperationCompleted, userState);

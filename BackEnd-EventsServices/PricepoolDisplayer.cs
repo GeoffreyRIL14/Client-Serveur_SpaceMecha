@@ -92,7 +92,11 @@ namespace BackEnd_EventsServices
             {
                 if (e.Result == true)
                 {
-                    MessageBox.Show("Price Pool Created");
+                    if (idLb.Text == "0")
+                        MessageBox.Show("Price Pool Created");
+                    else
+                        MessageBox.Show("Price Pool Modified");
+
                     this.Close();
                 }
                 else

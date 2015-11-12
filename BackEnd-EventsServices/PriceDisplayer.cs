@@ -40,7 +40,11 @@ namespace BackEnd_EventsServices
             {
                 if (e.Result > 0)
                 {
-                    MessageBox.Show("Price Created");
+                    if (idLb.Text == "0") 
+                        MessageBox.Show("Price Created");
+                    else
+                        MessageBox.Show("Price Modified");
+
                     this.Close();
                 }
                 else

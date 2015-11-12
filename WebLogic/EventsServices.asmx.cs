@@ -34,9 +34,6 @@ namespace WebLogic
         [WebMethod]
         public ProfilS CreateProfil(string name, string tokenId = "")
         {
-            string test1 = "";
-
-            test1 = "c'était un test";
 
             using (MasterDBDataContext db = new MasterDBDataContext())
             {
@@ -132,24 +129,33 @@ namespace WebLogic
                 else
                 {
                     eventGame = db.Event.SingleOrDefault(e => e.idEvent == id);
-                    eventGame.Name = name;
+                    if (name != "")
+                    {
+                        eventGame.Name = name;
+                    }
                     eventGame.StartDate = startDate;
                     eventGame.EndDate = endDate;
-                    eventGame.Description = description;
+                    if (description != "")
+                    {
+                        eventGame.Description = description;
+                    }
                 }
                 try
                 {
-                    if(id == 0)
-                        db.SubmitChanges();
+                    if (image != null)
+                    {
+                        if (id == 0)
+                            db.SubmitChanges();
 
-                    string path = IMAGE_PATH + "events\\" + eventGame.idEvent + "-" + eventGame.Name;
-                    if (!Directory.Exists(path))
-                        Directory.CreateDirectory(IMAGE_PATH + "events\\" + eventGame.idEvent + "-" + eventGame.Name);
-                   
-                    using (FileStream fs = new FileStream(path + "\\" + "cover", FileMode.OpenOrCreate, FileAccess.Write))
-                    {                        
-                        fs.Write(image, 0, image.Length);
-                        eventGame.Image = path + "\\" + "cover";
+                        string path = IMAGE_PATH + "events\\" + eventGame.idEvent + "-" + eventGame.Name;
+                        if (!Directory.Exists(path))
+                            Directory.CreateDirectory(IMAGE_PATH + "events\\" + eventGame.idEvent + "-" + eventGame.Name);
+
+                        using (FileStream fs = new FileStream(path + "\\" + "cover", FileMode.OpenOrCreate, FileAccess.Write))
+                        {
+                            fs.Write(image, 0, image.Length);
+                            eventGame.Image = path + "\\" + "cover";
+                        }
                     }
                                        
                     db.SubmitChanges();

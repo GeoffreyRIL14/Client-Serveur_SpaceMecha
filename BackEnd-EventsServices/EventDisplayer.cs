@@ -28,7 +28,11 @@ namespace BackEnd_EventsServices
             {
                 if (e.Result > 0)
                 {
-                    MessageBox.Show("Event Created");
+                    if (idLb.Text == "0")
+                        MessageBox.Show("Event Created");
+                    else
+                        MessageBox.Show("Event Modified");
+
                     this.Close();
                 }
                 else
@@ -55,31 +59,34 @@ namespace BackEnd_EventsServices
         {
             try
             {
-                byte[] bytes;    
-
-                using (FileStream fsSource = new FileStream(imagePb.ImageLocation,
-            FileMode.Open, FileAccess.Read))
+                byte[] bytes = null;    
+                if (imagePb.Image != null && imagePb.ImageLocation != null)
                 {
 
-                    // Read the source file into a byte array.
-                    bytes = new byte[fsSource.Length];
-                    int numBytesToRead = (int)fsSource.Length;
-                    int numBytesRead = 0;
-                    while (numBytesToRead > 0)
+
+                    using (FileStream fsSource = new FileStream(imagePb.ImageLocation,
+                FileMode.Open, FileAccess.Read))
                     {
-                        // Read may return anything from 0 to numBytesToRead.
-                        int n = fsSource.Read(bytes, numBytesRead, numBytesToRead);
 
-                        if (n == 0)
-                            break;
+                        // Read the source file into a byte array.
+                        bytes = new byte[fsSource.Length];
+                        int numBytesToRead = (int)fsSource.Length;
+                        int numBytesRead = 0;
+                        while (numBytesToRead > 0)
+                        {
+                            // Read may return anything from 0 to numBytesToRead.
+                            int n = fsSource.Read(bytes, numBytesRead, numBytesToRead);
 
-                        numBytesRead += n;
-                        numBytesToRead -= n;
-                    }
+                            if (n == 0)
+                                break;
+
+                            numBytesRead += n;
+                            numBytesToRead -= n;
+                        }
+                    }                
                 }
-
                 es.CreateOrUpdateEventAsync(int.Parse(idLb.Text), nameTb.Text, startDateDTP.Value, endDateDTP.Value, bytes, descriptionTb.Text);
-               
+
             }
             catch (Exception ex)
             {
