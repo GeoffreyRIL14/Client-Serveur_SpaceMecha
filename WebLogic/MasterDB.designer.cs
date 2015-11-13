@@ -36,6 +36,9 @@ namespace WebLogic
     partial void InsertProfil(Profil instance);
     partial void UpdateProfil(Profil instance);
     partial void DeleteProfil(Profil instance);
+    partial void InsertGroupSign(GroupSign instance);
+    partial void UpdateGroupSign(GroupSign instance);
+    partial void DeleteGroupSign(GroupSign instance);
     partial void InsertPrice(Price instance);
     partial void UpdatePrice(Price instance);
     partial void DeletePrice(Price instance);
@@ -133,6 +136,8 @@ namespace WebLogic
 		
 		private string _Image;
 		
+		private EntitySet<GroupSign> _GroupSign;
+		
 		private EntitySet<PricePool> _PricePool;
 		
     #region Définitions de méthodes d'extensibilité
@@ -155,6 +160,7 @@ namespace WebLogic
 		
 		public Event()
 		{
+			this._GroupSign = new EntitySet<GroupSign>(new Action<GroupSign>(this.attach_GroupSign), new Action<GroupSign>(this.detach_GroupSign));
 			this._PricePool = new EntitySet<PricePool>(new Action<PricePool>(this.attach_PricePool), new Action<PricePool>(this.detach_PricePool));
 			OnCreated();
 		}
@@ -279,6 +285,19 @@ namespace WebLogic
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Event_GroupSign", Storage="_GroupSign", ThisKey="idEvent", OtherKey="idEvent")]
+		public EntitySet<GroupSign> GroupSign
+		{
+			get
+			{
+				return this._GroupSign;
+			}
+			set
+			{
+				this._GroupSign.Assign(value);
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Event_PricePool", Storage="_PricePool", ThisKey="idEvent", OtherKey="idEvent")]
 		public EntitySet<PricePool> PricePool
 		{
@@ -312,6 +331,18 @@ namespace WebLogic
 			}
 		}
 		
+		private void attach_GroupSign(GroupSign entity)
+		{
+			this.SendPropertyChanging();
+			entity.Event = this;
+		}
+		
+		private void detach_GroupSign(GroupSign entity)
+		{
+			this.SendPropertyChanging();
+			entity.Event = null;
+		}
+		
 		private void attach_PricePool(PricePool entity)
 		{
 			this.SendPropertyChanging();
@@ -341,6 +372,8 @@ namespace WebLogic
 		
 		private string _TokenId;
 		
+		private EntitySet<GroupSign> _GroupSign;
+		
     #region Définitions de méthodes d'extensibilité
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
@@ -359,6 +392,7 @@ namespace WebLogic
 		
 		public Profil()
 		{
+			this._GroupSign = new EntitySet<GroupSign>(new Action<GroupSign>(this.attach_GroupSign), new Action<GroupSign>(this.detach_GroupSign));
 			OnCreated();
 		}
 		
@@ -462,6 +496,19 @@ namespace WebLogic
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Profil_GroupSign", Storage="_GroupSign", ThisKey="idProfil", OtherKey="idProfil")]
+		public EntitySet<GroupSign> GroupSign
+		{
+			get
+			{
+				return this._GroupSign;
+			}
+			set
+			{
+				this._GroupSign.Assign(value);
+			}
+		}
+		
 		public event PropertyChangingEventHandler PropertyChanging;
 		
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -481,11 +528,25 @@ namespace WebLogic
 				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
 		}
+		
+		private void attach_GroupSign(GroupSign entity)
+		{
+			this.SendPropertyChanging();
+			entity.Profil = this;
+		}
+		
+		private void detach_GroupSign(GroupSign entity)
+		{
+			this.SendPropertyChanging();
+			entity.Profil = null;
+		}
 	}
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.GroupSign")]
-	public partial class GroupSign
+	public partial class GroupSign : INotifyPropertyChanging, INotifyPropertyChanged
 	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
 		
 		private int _idProfil;
 		
@@ -493,11 +554,30 @@ namespace WebLogic
 		
 		private int _Score;
 		
+		private EntityRef<Event> _Event;
+		
+		private EntityRef<Profil> _Profil;
+		
+    #region Définitions de méthodes d'extensibilité
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnidProfilChanging(int value);
+    partial void OnidProfilChanged();
+    partial void OnidEventChanging(int value);
+    partial void OnidEventChanged();
+    partial void OnScoreChanging(int value);
+    partial void OnScoreChanged();
+    #endregion
+		
 		public GroupSign()
 		{
+			this._Event = default(EntityRef<Event>);
+			this._Profil = default(EntityRef<Profil>);
+			OnCreated();
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_idProfil", DbType="Int NOT NULL")]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_idProfil", DbType="Int NOT NULL", IsPrimaryKey=true)]
 		public int idProfil
 		{
 			get
@@ -508,12 +588,20 @@ namespace WebLogic
 			{
 				if ((this._idProfil != value))
 				{
+					if (this._Profil.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnidProfilChanging(value);
+					this.SendPropertyChanging();
 					this._idProfil = value;
+					this.SendPropertyChanged("idProfil");
+					this.OnidProfilChanged();
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_idEvent", DbType="Int NOT NULL")]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_idEvent", DbType="Int NOT NULL", IsPrimaryKey=true)]
 		public int idEvent
 		{
 			get
@@ -524,7 +612,15 @@ namespace WebLogic
 			{
 				if ((this._idEvent != value))
 				{
+					if (this._Event.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnidEventChanging(value);
+					this.SendPropertyChanging();
 					this._idEvent = value;
+					this.SendPropertyChanged("idEvent");
+					this.OnidEventChanged();
 				}
 			}
 		}
@@ -540,8 +636,100 @@ namespace WebLogic
 			{
 				if ((this._Score != value))
 				{
+					this.OnScoreChanging(value);
+					this.SendPropertyChanging();
 					this._Score = value;
+					this.SendPropertyChanged("Score");
+					this.OnScoreChanged();
 				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Event_GroupSign", Storage="_Event", ThisKey="idEvent", OtherKey="idEvent", IsForeignKey=true)]
+		public Event Event
+		{
+			get
+			{
+				return this._Event.Entity;
+			}
+			set
+			{
+				Event previousValue = this._Event.Entity;
+				if (((previousValue != value) 
+							|| (this._Event.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Event.Entity = null;
+						previousValue.GroupSign.Remove(this);
+					}
+					this._Event.Entity = value;
+					if ((value != null))
+					{
+						value.GroupSign.Add(this);
+						this._idEvent = value.idEvent;
+					}
+					else
+					{
+						this._idEvent = default(int);
+					}
+					this.SendPropertyChanged("Event");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Profil_GroupSign", Storage="_Profil", ThisKey="idProfil", OtherKey="idProfil", IsForeignKey=true)]
+		public Profil Profil
+		{
+			get
+			{
+				return this._Profil.Entity;
+			}
+			set
+			{
+				Profil previousValue = this._Profil.Entity;
+				if (((previousValue != value) 
+							|| (this._Profil.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Profil.Entity = null;
+						previousValue.GroupSign.Remove(this);
+					}
+					this._Profil.Entity = value;
+					if ((value != null))
+					{
+						value.GroupSign.Add(this);
+						this._idProfil = value.idProfil;
+					}
+					else
+					{
+						this._idProfil = default(int);
+					}
+					this.SendPropertyChanged("Profil");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
 		}
 	}
