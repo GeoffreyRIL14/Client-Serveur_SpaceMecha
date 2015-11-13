@@ -24,8 +24,8 @@
   </Table>
   <Table Name="dbo.GroupSign" Member="GroupSign">
     <Type Name="GroupSign">
-      <Column Name="idProfil" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="idEvent" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="idProfil" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="idEvent" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
       <Column Name="Score" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Association Name="Event_GroupSign" Member="Event" ThisKey="idEvent" OtherKey="idEvent" Type="Event" IsForeignKey="true" />
       <Association Name="Profil_GroupSign" Member="Profil" ThisKey="idProfil" OtherKey="idProfil" Type="Profil" IsForeignKey="true" />
