@@ -121,7 +121,14 @@ namespace WebLogic
                 }
                 else
                 {
-                    return null;
+                    return new ProfilS()
+                    {
+                        id = -1,
+                        name = "",
+                        avatar = "",
+                        rank = 0,
+                        tokenid = ""
+                    };
                 }
             }
         }
