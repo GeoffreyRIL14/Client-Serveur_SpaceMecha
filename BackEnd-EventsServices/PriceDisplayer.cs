@@ -58,19 +58,31 @@ namespace BackEnd_EventsServices
 
         private void saveBtn_Click(object sender, EventArgs e)
         {
-
+            bool validAssetPath = false;
             byte[] image = null, asset = null;
 
-            if(!String.IsNullOrEmpty(imagePb.ImageLocation))
-                image = ReadFile(imagePb.ImageLocation);
+            try
+            {
+                Path.GetDirectoryName(assetBundleLb.Text);
+                if (assetBundleLb.Text != "ok" && assetBundleLb.Text != "no asset")
+                    validAssetPath = true;
+                else
+                    validAssetPath = false;
+            }
+            catch
+            {
+                validAssetPath = false;
+            }
 
-            if(!String.IsNullOrEmpty(assetBundleLb.Text))
+            if (!String.IsNullOrEmpty(assetBundleLb.Text) && validAssetPath)
                 asset = ReadFile(assetBundleLb.Text);
 
-            if (image != null && asset != null)
-                es.CreateOrUpdatePriceAsync(int.Parse(idLb.Text), nameTb.Text, image, asset, descriptionTb.Text);
-            else
-                MessageBox.Show("Some object field is blank");
+
+            if (!String.IsNullOrEmpty(imagePb.ImageLocation))
+                image = ReadFile(imagePb.ImageLocation);
+
+            es.CreateOrUpdatePriceAsync(int.Parse(idLb.Text), nameTb.Text, image, asset, descriptionTb.Text);
+
         }
 
 

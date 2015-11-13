@@ -42,6 +42,12 @@ namespace WebLogic
 
                 if (profil == null)
                 {
+                    if (tokenId == "")
+                    {
+                        Random random = new Random();
+                        tokenId = random.Next().ToString();
+                    }
+
                     profil = new Profil();
                     profil.Name = name;
                     profil.TokenId = tokenId;
@@ -93,8 +99,17 @@ namespace WebLogic
                 {
                     return CreateProfil(name, tokenid);
                 }
-                else
+                else if (tokenid == profil.TokenId)
                 {
+                    if (tokenid == "")
+                    {
+                        Random random = new Random();
+                        tokenid = random.Next().ToString();
+                        profil.TokenId = tokenid;
+                        db.Profil.InsertOnSubmit(profil);
+                        db.SubmitChanges();
+                    }
+
                     return new ProfilS()
                     {
                         id = profil.idProfil,
@@ -103,6 +118,10 @@ namespace WebLogic
                         rank = profil.Rank,
                         tokenid = profil.TokenId
                     };
+                }
+                else
+                {
+                    return null;
                 }
             }
         }
@@ -543,27 +562,41 @@ namespace WebLogic
                 else
                 {
                     price = db.Price.SingleOrDefault(e => e.idPrice == id);
-                    price.Name = name;
-                    price.Description = description;
+
+                    if (name != "")
+                        price.Name = name;
+
+                    if (description != "")
+                        price.Description = description;
                 }
                 try
                 {
-                    if (id == 0)
-                        db.SubmitChanges();
-
-                    string path = IMAGE_PATH + "prices\\" + price.idPrice + "-" + price.Name;
-                    if (!Directory.Exists(path))
-                        Directory.CreateDirectory(IMAGE_PATH + "prices\\" + price.idPrice + "-" + price.Name);
-
-                    using (FileStream fs = new FileStream(path + "\\" + "cover", FileMode.OpenOrCreate, FileAccess.Write))
+                    if (image != null || asset != null)
                     {
-                        fs.Write(image, 0, image.Length);
-                        price.Image = path + "\\" + "cover";
-                    }
-                    using (FileStream fs = new FileStream(path + "\\" + "asset", FileMode.OpenOrCreate, FileAccess.Write))
-                    {
-                        fs.Write(asset, 0, asset.Length);
-                        price.Path = path + "\\" + "asset";
+                        if (id == 0)
+                            db.SubmitChanges();
+
+                        string path = IMAGE_PATH + "prices\\" + price.idPrice + "-" + price.Name;
+                        if (!Directory.Exists(path))
+                            Directory.CreateDirectory(IMAGE_PATH + "prices\\" + price.idPrice + "-" + price.Name);
+
+                        if (image != null)
+                        {
+                            using (FileStream fs = new FileStream(path + "\\" + "cover", FileMode.OpenOrCreate, FileAccess.Write))
+                            {
+                                fs.Write(image, 0, image.Length);
+                                price.Image = path + "\\" + "cover";
+                            }
+                        }
+
+                        if (asset != null)
+                        {
+                            using (FileStream fs = new FileStream(path + "\\" + "asset", FileMode.OpenOrCreate, FileAccess.Write))
+                            {
+                                fs.Write(asset, 0, asset.Length);
+                                price.Path = path + "\\" + "asset";
+                            }
+                        }
                     }
 
                     db.SubmitChanges();
