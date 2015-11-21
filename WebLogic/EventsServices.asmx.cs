@@ -408,6 +408,48 @@ namespace WebLogic
             }
             return true;
         }
+        // @todo
+        [WebMethod]
+        public int[] GetRankGroupSign(int eventId, int profilId)
+        {
+            int scorePlayer = 0;
+            int[] ret = new int[2] { 0, 0 };
+            List<GroupSign> all = null;
+
+            using (MasterDBDataContext db = new MasterDBDataContext())
+            {
+                Event eventGame = db.Event.SingleOrDefault(e => e.idEvent == eventId);
+                Profil profil = db.Profil.SingleOrDefault(p => p.idProfil == profilId);
+
+                if (eventGame != null && profil != null)
+                {
+                    GroupSign groupSign = null;
+                    groupSign = db.GroupSign.SingleOrDefault(gs => gs.idEvent == eventId && gs.idProfil == profilId);
+
+                    if (groupSign != null)
+                    {
+                        ret[0] = 1;
+                        scorePlayer = groupSign.Score;
+
+                        var sel = from g in db.GroupSign where g.idEvent == eventId select g;
+                        all = sel.ToList();
+                        ret[1] = all.Count();
+                    }
+                }
+            }
+
+            if (all != null)
+            {                
+                foreach (GroupSign infoProfil in all)
+                {
+                    if (infoProfil.Score > scorePlayer)
+                    {
+                        ret[0]++;
+                    }
+                }
+            }
+            return ret;
+        }
         [WebMethod]
         public bool CreatePricePool(int priceId, int eventId, int placeRangeMin, int placeRangeMax, float placePercent)
         {
