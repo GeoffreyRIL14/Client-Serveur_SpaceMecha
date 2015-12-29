@@ -20,6 +20,7 @@ namespace BackEnd_EventsServices
 
         public PricepoolDisplayer()
         {
+            InitializeComponent();
             es.CreateOrUpdatePricePoolCompleted += es_CreateOrUpdatePricePoolCompleted;
             es.GetEventCompleted += es_GetEventCompleted;
             es.GetPriceCompleted += es_GetPriceCompleted;
