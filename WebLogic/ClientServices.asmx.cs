@@ -64,5 +64,10 @@ namespace WebLogic
             }
             return null;
         }
+        [WebMethod]
+        public string GetAllScores(int eventId)
+        {
+            return EventsServices.Instance.GetAllScoresGroupSign(eventId);
+        }
     }
 }

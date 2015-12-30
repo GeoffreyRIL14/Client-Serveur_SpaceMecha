@@ -393,7 +393,13 @@ namespace WebLogic
                         db.GroupSign.InsertOnSubmit(groupSign);
                     }
                     else
-                        groupSign.Score = score;
+                    {
+                        if (groupSign.Score < score)
+                        {
+                            groupSign.Score = score;
+                        }
+                    }
+                        
 
                     try
                     {
@@ -449,6 +455,29 @@ namespace WebLogic
                 }
             }
             return ret;
+        }
+        [WebMethod]
+        public string GetAllScoresGroupSign(int eventId)
+        {
+            string result = "";
+            using (MasterDBDataContext db = new MasterDBDataContext())
+            {
+                var groupSigns = db.GroupSign.Where(gs => gs.idEvent == eventId);
+
+                if (groupSigns != null)
+                {
+                    GroupSign[] allGroupSigns = groupSigns.ToArray();
+
+                    for (int i = 0; i < allGroupSigns.Length; i++)
+                    {
+                        int idP = allGroupSigns[i].idProfil;
+                        Profil profilScore = db.Profil.SingleOrDefault(pr => pr.idProfil == idP);
+                        result += profilScore.Name + " : " + allGroupSigns[i].Score.ToString() + "\n";
+                    }
+                    return result;
+                }
+            }
+            return null;
         }
         [WebMethod]
         public bool CreatePricePool(int priceId, int eventId, int placeRangeMin, int placeRangeMax, float placePercent)
