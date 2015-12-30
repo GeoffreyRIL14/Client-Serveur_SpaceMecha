@@ -462,7 +462,7 @@ namespace WebLogic
             string result = "";
             using (MasterDBDataContext db = new MasterDBDataContext())
             {
-                var groupSigns = db.GroupSign.Where(gs => gs.idEvent == eventId);
+                var groupSigns = db.GroupSign.Where(gs => gs.idEvent == eventId).OrderByDescending(gss => gss.Score);
 
                 if (groupSigns != null)
                 {
