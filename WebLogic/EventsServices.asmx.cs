@@ -300,8 +300,10 @@ namespace WebLogic
                         {
                             result.priceS[i] = GetPrice((int)arrayEarnedPricePool[i].idPrice);
                         }
-                        return result;  
-                                                    
+
+                        result.eventS = GetEvent(idEvent);
+
+                        return result;                                                      
                     }
                 }                
             }
