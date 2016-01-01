@@ -69,5 +69,20 @@ namespace WebLogic
         {
             return EventsServices.Instance.GetAllScoresGroupSign(eventId);
         }
+        [WebMethod]
+        public EventGame GetEarnedPrices(int profilId, int eventId)
+        {
+            return EventsServices.Instance.GetEarnedPrices(profilId, eventId);
+        }
+        [WebMethod]
+        public int GetLastFinishedEvent()
+        {
+            return EventsServices.Instance.GetLastPastEvent();
+        }
+        [WebMethod]
+        public int[] GetAllFinishedEvent()
+        {
+            return EventsServices.Instance.GetAllPastEvent();
+        }
     }
 }

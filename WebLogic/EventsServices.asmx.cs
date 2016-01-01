@@ -270,6 +270,92 @@ namespace WebLogic
             return null;
         }
         [WebMethod]
+        public EventGame GetEarnedPrices(int idProfil, int idEvent)
+        {
+            EventGame result = new EventGame();
+
+            using (MasterDBDataContext db = new MasterDBDataContext())
+            {
+                GroupSign groupSign = db.GroupSign.SingleOrDefault(gs => gs.idProfil == idProfil && gs.idEvent == idEvent);
+                if (groupSign != null)
+                {
+                    int[] classement = new int[2];
+                    classement = GetRankGroupSign(idEvent, idProfil);
+                        
+                    int classementPourcent = 100;
+                    if (classement[1] > 0)
+                        classementPourcent = classement[0] / classement[1] * 100;
+                    var earnedPricePool = db.PricePool.Where(pp => pp.idEvent == idEvent &&
+                        ((classement[0] <= pp.placeRangeMin && classement[0] >= pp.placeRangeMax) ||
+                        (classement[0] >= pp.placeRangeMin && classement[0] <= pp.placeRangeMax) ||
+                        (classementPourcent <= pp.placePurcent)));
+
+                    if (earnedPricePool != null)
+                    {
+                        PricePool[] arrayEarnedPricePool = new PricePool[earnedPricePool.ToArray().Count()];
+                        arrayEarnedPricePool = earnedPricePool.ToArray();
+                        
+                        result.priceS = new PriceS[arrayEarnedPricePool.Count()];
+                        for (int i = 0; i < arrayEarnedPricePool.Count(); i++)
+                        {
+                            result.priceS[i] = GetPrice((int)arrayEarnedPricePool[i].idPrice);
+                        }
+                        return result;  
+                                                    
+                    }
+                }                
+            }
+            //return -1;
+            return null;
+        }
+        [WebMethod]
+        public int GetLastPastEvent()
+        {
+            EventGame result = new EventGame();
+
+            using (MasterDBDataContext db = new MasterDBDataContext())
+            {
+                DateTime date = DateTime.Now;
+                
+                var eventGames = db.Event.Where(ev => ev.EndDate < date).OrderByDescending(ev => ev.EndDate);
+
+                if (eventGames != null)
+                {
+                    Event[] arrayEventGames = new Event[eventGames.ToArray().Count()];
+                    arrayEventGames = eventGames.ToArray();
+
+                    return arrayEventGames[0].idEvent;
+                }
+            }
+            return -1;
+        }
+        [WebMethod]
+        public int[] GetAllPastEvent()
+        {
+            using (MasterDBDataContext db = new MasterDBDataContext())
+            {
+                DateTime date = DateTime.Now;
+                
+                var eventGames = db.Event.Where(ev => ev.EndDate < date).OrderByDescending(ev => ev.EndDate);
+
+                if (eventGames != null)
+                {
+                    int numberOfPastEvents = eventGames.ToArray().Count();
+                    int[] result = new int[numberOfPastEvents];
+
+                    Event[] arrayEventGames = new Event[numberOfPastEvents];
+                    arrayEventGames = eventGames.ToArray();
+                    
+                    for(int i = 0; i < numberOfPastEvents; i++)
+                    {
+                        result[i] = arrayEventGames[i].idEvent;
+                    }
+                    return result;
+                }
+            }
+            return null;
+        }
+        [WebMethod]
         public EventS GetEvent(int id)
         {
             using (MasterDBDataContext db = new MasterDBDataContext())
